@@ -1,51 +1,30 @@
 var myGamePiece;
+var myHighScore;
 var myScore;
 var scoreAdded = [];
 var frameNo;
 var daScore;
-var hight_score = getHighScore(daScore,scoreAdded);
 var myOponent;
-var myBorder1;
-var myBorder2;
-var myBorder3;
-var myBorder4;
-var inBorder1;
-var inBorder2;
-var inBorder3;
-var inBorder4;
+var Borders = [];
 var finishLine;
-var healthOne;
-var healthTwo;
-var healthThree;
 var enimNukes = [];
-
-function uploadScore(username, score) {
-    var request = new XMLHttpRequest();
-    request.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("test").innerHTML = this.responseText;
-        }
-    }
-    request.open("GET", "uploadscore.php?user=" + username + "&score=" + score);
-    request.setRequestHeader("Content-type", "application/json");
-    request.send();
-}
 
 function startGame() {
     frameNo = 0;
     myGamePiece = new component(15, 15, "purple", 25, 50);
-    myScore = new component("9px", "Consolas", "black", 475, 25, "text");
-    myHighScore = new component("9px", "Consolas", "black", 475, 55, "text");
+    myScore = new component("9px", "Verdana", "black", 475, 25, "text");
+    myHighScore = new component("9px", "Verdana", "black", 475, 55, "text");
     myOponent = new component(15, 15, "blue", 45, 50);
-    myBorder1 = new component(10,250,"black",460,10);
-    myBorder2 = new component(450,10,"black",10,10);
-    myBorder3 = new component(10,250,"black",10,10);
-    myBorder4 = new component(450,10,"black",10,250);
-    inBorder1 = new component(10,125,"black",400,70);
-    inBorder2 = new component(330,10,"black",70,70);
-    inBorder3 = new component(10,125,"black",70,70);
-    inBorder4 = new component(330,10,"black",70,185);
-    finishLine = new component(50,10,"green",20,70);
+    Borders.push(new component(8,250,"black",460,10));
+    Borders.push(new component(8,250,"black",460,10));
+    Borders.push(new component(450,8,"black",10,10));
+    Borders.push(new component(8,250,"black",10,10));
+    Borders.push(new component(458,8,"black",10,260));
+    Borders.push(new component(8,125,"black",400,70));
+    Borders.push(new component(330,8,"black",70,70));
+    Borders.push(new component(8,125,"black",70,70));
+    Borders.push(new component(338,8,"black",70,195));
+    finishLine = new component(52,8,"grey",18,70);
     myGameArea.start();
 }
 
@@ -144,28 +123,20 @@ function component(width, height, color, x, y,type) {
 
 function updateGameArea() {
     var x,y;
-    var lives = 2;
     for (i = 0; i < enimNukes.length; i += 1) {
         if (myGamePiece.crashWith(enimNukes[i])) {
-            high_score = getHighScore(daScore,scoreAdded);
             myGameArea.stop();
             enimNukes.splice(0,enimNukes.length);
             return;
         } 
     }
-    if (myGamePiece.crashWith(myBorder1) || myGamePiece.crashWith(myBorder2) || myGamePiece.crashWith(myBorder3) || myGamePiece.crashWith(myBorder4)) {
-        high_score = getHighScore(daScore,scoreAdded);
-        myGameArea.stop();
-        nimNukes.splice(0,enimNukes.length);
+    for (i = 0; i < Borders.length; i += 1) {
+        if (myGamePiece.crashWith(Borders[i])) {
+            myGameArea.stop();
+            return;
+        } 
     }
-    else if (myGamePiece.crashWith(inBorder1) || myGamePiece.crashWith(inBorder2) || myGamePiece.crashWith(inBorder3) || myGamePiece.crashWith(inBorder4)) {
-        high_score = getHighScore(daScore,scoreAdded);
-        myGameArea.stop();
-        enimNukes.splice(0,enimNukes.length);
-        
-    }
-    else if (myGamePiece.crashWith(myOponent)) {
-        high_score = getHighScore(daScore,scoreAdded);
+    if (myGamePiece.crashWith(myOponent)) {
         myGameArea.stop();
         enimNukes.splice(0,enimNukes.length);
     }
@@ -185,17 +156,12 @@ function updateGameArea() {
         if (enimNukes.length == 32) {
             enimNukes.splice(0,1);
         }
-        myBorder1.update();
-        myBorder2.update();
-        myBorder3.update();
-        myBorder4.update();
-        inBorder1.update();
-        inBorder2.update();
-        inBorder3.update();
-        inBorder4.update();
+        for (i = 0; i < Borders.length; i += 1) {
+           Borders[i].update();
+        }
         finishLine.update();
         daScore = Math.round(frameNo/10);
-        myScore.text = "SCORE: " + daScore;
+        myScore.text = "Score: " + daScore;
         myHighScore.text = "High Score: " + getHighScore(daScore,scoreAdded);
 
         myScore.update();
@@ -227,15 +193,35 @@ function everyinterval(n) {
     return false;
 }
 
+  
+function setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
 function getHighScore(daScore,scoreAdded) {
     scoreAdded.push(daScore);
     hs = Math.max.apply(Math,scoreAdded);
-    if (localStorage.getItem('high_score') !== null) {
-        if (hs > localStorage.getItem('high_score')) {
-            localStorage.setItem('high_score',hs);
+    if (getCookie('highscore') !== null) {
+        if (hs > getCookie('highscore')) {
+            setCookie('highscore',hs,3);
         }
     } else {
-        localStorage.setItem('high_score',hs);
+        setCookie('highscore',hs,3);
     }
-    return localStorage.getItem('high_score');
+    return getCookie('highscore');
 }
