@@ -1,0 +1,74 @@
+h1 {
+    position: static;
+    text-align: center;
+    font-family: Tahoma, Verdana, Segoe, sans-serif; font-size: 35px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px;
+}
+canvas {
+    border:1px solid #d3d3d3;
+    position: fixed;
+    right: 500px;
+    top: 100px;
+    background-color: #ffffff;
+}
+.button {
+    display: inline-block;
+    outline: 0;
+    position: fixed;
+    right: 60%;
+    top: 55%;
+    text-align: center;
+    cursor: pointer;
+    padding: 17px 30px;
+    border: 0;
+    color: #fff;
+    font-size: 17.5px;
+    border: 2px solid transparent;
+    border-color: #000;
+    color: #000;
+    background: transparent;
+    font-weight: 800;
+    line-height: 30px;
+    transition: background,color .1s ease-in-out;
+    
+    
+}
+.button1 {
+    display: inline-block;
+    outline: 0;
+    position: fixed;
+    right: 46%;
+    top: 55%;
+    text-align: center;
+    cursor: pointer;
+    padding: 17px 30px;
+    border: 0;
+    color: #fff;
+    font-size: 17.5px;
+    border: 2px solid transparent;
+    border-color: #000;
+    color: #000;
+    background: transparent;
+    font-weight: 800;
+    line-height: 30px;
+    transition: background,color .1s ease-in-out;
+}
+.button2 {
+    display: inline-block;
+    outline: 0;
+    position: fixed;
+    right: 32.6%;
+    top: 55%;
+    text-align: center;
+    cursor: pointer;
+    padding: 17px 30px;
+    border: 0;
+    color: #fff;
+    font-size: 17.5px;
+    border: 2px solid transparent;
+    border-color: #000;
+    color: #000;
+    background: transparent;
+    font-weight: 800;
+    line-height: 30px;
+    transition: background,color .1s ease-in-out;
+}
